@@ -401,7 +401,8 @@ def lc_colourmap(colour_scheme, colour_bar=False):
         return (cmap, norm, cb_labels, cb_ticks)
 
 
-def plot_land_cover(data, year=None, measurement=None, out_width=15, cols=4,):
+def plot_land_cover(data, year=None, measurement=None, out_width=15, cols=4, 
+                    axis_off=False, legend_off=False, savefig=False, savename=None):
     """
     Plot a single land cover measurement with appropriate colour scheme.
     Parameters
@@ -441,8 +442,23 @@ def plot_land_cover(data, year=None, measurement=None, out_width=15, cols=4,):
     if len(data.dims) < 3:
         fig, ax = plt.subplots()
         fig.set_size_inches(width * scale, height * scale)
-        make_colorbar(fig, ax, measurement)
+        if legend_off == True:
+            pass
+        else:
+            make_colorbar(fig, ax, measurement)
+        if axis_off == True:
+            ax.axis("off")
+        else:
+            pass
+            
         im = ax.imshow(data, cmap=cmap, norm=norm, interpolation="nearest")
+        
+        if savefig == True:
+            ax.figure.tight_layout()
+            ax.figure.savefig(savename + '.tiff', format='tiff', dpi=100)
+        else:
+            pass
+        
     else:
         if cols > len(data.time):
             cols = len(data.time)
@@ -451,13 +467,24 @@ def plot_land_cover(data, year=None, measurement=None, out_width=15, cols=4,):
         fig, ax = plt.subplots(nrows=rows, ncols=cols)
         fig.set_size_inches(
             width * scale, (height * scale / cols) * (len(data.time) / cols))
-
-        make_colorbar(fig, ax.flat[0], measurement)
+        if legend_off == True:
+            pass
+        else:
+            make_colorbar(fig, ax.flat[0], measurement)
+        if axis_off == True:
+            ax.axis("off")
+        else:
+            pass
 
         for a, b in enumerate(ax.flat):
             if a < data.shape[0]:
                 im = b.imshow(data[a], cmap=cmap, norm=norm,
                               interpolation="nearest")
+        if savefig == True:
+            ax.figure.tight_layout()
+            ax.figure.savefig(savename + '.tiff', format='tiff', dpi=100)
+        else:
+            pass
 
     return im
 
