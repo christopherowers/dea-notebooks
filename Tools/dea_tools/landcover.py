@@ -451,7 +451,7 @@ def plot_land_cover(data, year=None, measurement=None, out_width=15, cols=4,
         else:
             pass
             
-        im = ax.imshow(data, cmap=cmap, norm=norm, interpolation="nearest")
+        im = ax.imshow(data, cmap=cmap, norm=norm, interpolation="none")
         
         if savefig == True:
             ax.figure.tight_layout()
@@ -479,7 +479,7 @@ def plot_land_cover(data, year=None, measurement=None, out_width=15, cols=4,
         for a, b in enumerate(ax.flat):
             if a < data.shape[0]:
                 im = b.imshow(data[a], cmap=cmap, norm=norm,
-                              interpolation="nearest")
+                              interpolation="none")
         if savefig == True:
             ax.figure.tight_layout()
             ax.figure.savefig(savename + '.tiff', format='tiff', dpi=100)
